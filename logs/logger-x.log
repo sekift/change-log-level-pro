@@ -1,0 +1,11 @@
+2020-08-08 02:27:49,436:DEBUG main (ChangeLogLevelProcessUnitTest.java:18) - test start
+2020-08-08 02:27:49,444:DEBUG main (ChangeLogLevelProcessUnitTest.java:19) - type:org.apache.logging.slf4j.Log4jLoggerFactory
+2020-08-08 02:27:49,469:INFO main (AbstractProcessUnitImpl.java:45) - [LoggerLevel]start
+2020-08-08 02:27:49,473:DEBUG main (AbstractProcessUnitImpl.java:48) - [LoggerLevel]log type=org.apache.logging.slf4j.Log4jLoggerFactory
+2020-08-08 02:27:49,512:INFO main (AbstractProcessUnitImpl.java:66) - [LoggerLevel]loggerMap={root=root, com.sekift.logger.MethodInvokerProcessUnitTest=com.sekift.logger.MethodInvokerProcessUnitTest}
+2020-08-08 02:27:49,618:INFO main (AbstractProcessUnitImpl.java:87) - result={"loggerList":[{"loggerLevel":"DEBUG","loggerName":"root"},{"loggerLevel":"DEBUG","loggerName":"com.sekift.logger.MethodInvokerProcessUnitTest"}],"logFramework":"LOG4J2"}
+2020-08-08 02:27:49,621:DEBUG main (ChangeLogLevelProcessUnitTest.java:21) - frame:LOG4J2
+2020-08-08 02:27:49,622:INFO main (ChangeLogLevelProcessUnit.java:33) - [LoggerLevel]设置所有Log级别
+2020-08-08 02:27:49,624:INFO main (ChangeLogLevelProcessUnitTest.java:30) - 如果上面没有打印，表示升级到INFO了
+2020-08-08 02:27:49,628:INFO main (ChangeLogLevelProcessUnit.java:33) - [LoggerLevel]设置所有Log级别
+2020-08-08 02:27:49,630:DEBUG main (ChangeLogLevelProcessUnitTest.java:33) - end is debug
