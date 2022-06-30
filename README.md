@@ -1,10 +1,6 @@
 # change-log-level-pro 日志级别动态调整工具
 
-[change-log-level](https://github.com/sekift/change-log-level)的升级版
-
-# 版本说明
-
-由于slf4j在绑定多个实现时，只能选择最新的实现（即logback），为了使log4j与log4j2也能使用，因此将项目分拆成多个部分，可选择性地打包引入使用。
+[change-log-level](https://github.com/sekift/change-log-level)的升级版，由于slf4j在绑定多个实现时，只能选择最新的实现（即logback），为了使log4j与log4j2也能使用，因此将项目分拆成多个部分，可选择性地打包引入使用。
 
 四个module分别为：
 
@@ -20,13 +16,13 @@
 
 详见各模块的单元测试
 
-# 未来
+# 畅想未来
 
 按照美团的使用方案，可以通过HTTP或其他RPC提供给其他项目；如果可视化还需要配置后台web或client。
 
 因此如果需要作为中间件本程序还没有完成，但是作为项目引入仍然可以使用。
 
-# 更新
+# 更新说明
 
 **2022-06-30**
 
