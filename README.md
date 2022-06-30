@@ -41,7 +41,7 @@ change-log-level( https://github.com/sekift/change-log-level )的升级版 <br /
 	at org.apache.logging.slf4j.Log4jLoggerFactory.getLogger(Log4jLoggerFactory.java:29)
 	at org.slf4j.LoggerFactory.getLogger(LoggerFactory.java:358)
 	at org.slf4j.LoggerFactory.getLogger(LoggerFactory.java:383)
-	at com.sekift.logger.ChangeLogLevelProcessUnitTest.<init>(ChangeLogLevelProcessUnitTest.java:12)
+	at com.sekift.logger.Log4jProcessUnitImplTest.<init>(ChangeLogLevelProcessUnitTest.java:12)
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
 	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)

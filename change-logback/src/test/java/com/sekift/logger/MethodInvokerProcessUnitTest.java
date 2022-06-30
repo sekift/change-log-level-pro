@@ -10,6 +10,9 @@ import com.sekift.logger.bean.LoggerBean;
 import com.sekift.logger.impl.AbstractProcessUnitImpl;
 import com.sekift.logger.service.ProcessUnitFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MethodInvokerProcessUnitTest {
 	Logger logger = LoggerFactory.getLogger(MethodInvokerProcessUnitTest.class);
 
@@ -21,7 +24,7 @@ public class MethodInvokerProcessUnitTest {
 		AbstractProcessUnitImpl process = ProcessUnitFactory.newInstance(serverId).getMethodInvokerProcess();
 		logger.debug("frame:{}", process.logFrameworkType);
 
-		JSONArray data = new JSONArray();
+		List<LoggerBean> data = new ArrayList<>();
 		LoggerBean bean = new LoggerBean("com.sekift.logger.MethodInvokerProcessUnitTest", "INFO");
 		data.add(bean);
 

@@ -1,35 +1,29 @@
 package com.sekift.logger.process;
 
-import static com.sekift.logger.constant.LogConstant.LOGGER_LIST_IS_NULL;
-import static com.sekift.logger.constant.LogConstant.LOGGER_NOT_EXSIT;
-import static com.sekift.logger.constant.LogConstant.LOGGER_TYPE_UNKNOWN;
-import static com.sekift.logger.constant.LogConstant.PARAMETER_TYPE_ERROR;
-
-import java.util.List;
-
+import com.sekift.logger.bean.LoggerBean;
+import com.sekift.logger.enums.LogFrameworkType;
+import com.sekift.logger.impl.AbstractProcessUnitImpl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.sekift.logger.bean.LoggerBean;
-import com.sekift.logger.enums.LogFrameworkType;
-import com.sekift.logger.impl.AbstractProcessUnitImpl;
+import java.util.List;
+
+import static com.sekift.logger.constant.LogConstant.*;
 
 
 /**
  * 方法调用处理单元
+ *
  * @author sekift
  * @date 2018-04-27
  */
-public class MethodInvokerProcessUnit extends AbstractProcessUnitImpl{
-	private Logger log = LoggerFactory.getLogger(MethodInvokerProcessUnit.class);
+public class MethodInvokerProcessUnit extends AbstractProcessUnitImpl {
+    private Logger log = LoggerFactory.getLogger(MethodInvokerProcessUnit.class);
 
-	@Override
-	public String setLogLevel(JSONArray data) {
-		log.info("setLogLevel: data={}", data);
-		List<LoggerBean> loggerList = JSON.parseArray(data.toString(), LoggerBean.class);
+    @Override
+    public String setLogLevel(List<LoggerBean> loggerList) {
+        log.info("setLogLevel: loggerList={}", loggerList);
         if (CollectionUtils.isEmpty(loggerList)) {
             throw new RuntimeException(LOGGER_LIST_IS_NULL);
         }
@@ -52,9 +46,9 @@ public class MethodInvokerProcessUnit extends AbstractProcessUnitImpl{
         return "success";
     }
 
-	@Override
-	public String setLogLevel(String logLevel) {
-		return PARAMETER_TYPE_ERROR;
-	}
+    @Override
+    public String setLogLevel(String logLevel) {
+        return PARAMETER_TYPE_ERROR;
+    }
 
 }
