@@ -1,30 +1,34 @@
 package com.sekift.logger;
 
-import com.alibaba.fastjson.JSONArray;
-
 /**
  * 日志处理接口
+ *
  * @author sekift
  * @date 2018-04-27
  */
 public interface IProcessUnit {
-	/**
-	 * 默认等级
-	 * @param defaultLevel
-	 */
-    public void setDefaultLevel(String defaultLevel);
-	
+
     /**
-     * 日志等级
+     * 设置所有Logger等级
+     *
      * @param logLevel
-     * @return
+     * @return 处理结果
      */
-    public String setLogLevel(String logLevel);
-    
+    String setLogLevel(String logLevel);
+
     /**
-     * 类日志Bean
-     * @param loggerList
+     * 设置指定Logger等级
+     *
+     * @param loggerName
+     * @param loggerLevel
+     * @return 处理结果
+     */
+    String setLogLevel(String loggerName, String loggerLevel);
+
+    /**
+     * 获取日志对象集合
+     *
      * @return
      */
-    public String setLogLevel(JSONArray data);
+    String getLoggerList();
 }

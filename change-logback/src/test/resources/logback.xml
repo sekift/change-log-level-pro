@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 
+    <property name="logPath" value="logs"/>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -15,7 +17,7 @@
     <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>testFile-${bySecond}.log</file>
+        <file>${logPath}/testFile-${bySecond}.log</file>
         <append>true</append>
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -25,7 +27,7 @@
     </appender>
 
     <appender name="DAYFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logFile.log</file>
+        <file>${logPath}/logFile.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -41,8 +43,8 @@
         </encoder>
     </appender>
 
-    <logger name="com.sekift.logger.MethodInvokerProcessUnitTest" level="debug" />
-    
+    <logger name="com.sekift.logger.LogbackProcessUnitImplTest" level="debug"/>
+
     <root level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="DAYFILE"/>
