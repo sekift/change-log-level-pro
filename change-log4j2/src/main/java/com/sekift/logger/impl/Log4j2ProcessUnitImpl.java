@@ -4,11 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sekift.logger.IProcessUnit;
 import com.sekift.logger.enums.LogFrameworkType;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,41 +19,41 @@ import static com.sekift.logger.constant.LogConstant.*;
 
 /**
  * 日志调整抽象类
- * 支持log4j
+ * 支持log4j2
  *
  * @author sekift
  * @date 2018-04-27
  */
-public class Log4jProcessUnitImpl implements IProcessUnit {
-    private static final Logger log = LoggerFactory.getLogger(Log4jProcessUnitImpl.class);
+public class Log4j2ProcessUnitImpl implements IProcessUnit {
+    private Logger log = LoggerFactory.getLogger(Log4j2ProcessUnitImpl.class);
 
     private final LogFrameworkType logFrameworkType;
 
     private final ConcurrentHashMap<String, Object> loggerMap = new ConcurrentHashMap<>();
 
-    private static IProcessUnit instance = new Log4jProcessUnitImpl();
+    private static IProcessUnit instance = new Log4j2ProcessUnitImpl();
 
     public static IProcessUnit getSingleton() {
         return instance;
     }
 
-    private Log4jProcessUnitImpl() {
+    public Log4j2ProcessUnitImpl() {
         log.info("[LoggerLevel]start");
         String type = StaticLoggerBinder.getSingleton().getLoggerFactoryClassStr();
         if (log.isDebugEnabled()) {
             log.debug("[LoggerLevel]log type={}", type);
         }
-        if (LOG4J_LOGGER_FACTORY.equals(type)) {
-            logFrameworkType = LogFrameworkType.LOG4J;
-            Enumeration<?> enumeration = org.apache.log4j.LogManager.getCurrentLoggers();
-            while (enumeration.hasMoreElements()) {
-                org.apache.log4j.Logger logger = (org.apache.log4j.Logger) enumeration.nextElement();
-                if (logger.getLevel() != null) {
-                    loggerMap.put(logger.getName(), logger);
+        if (LOG4J2_LOGGER_FACTORY.equals(type)) {
+            logFrameworkType = LogFrameworkType.LOG4J2;
+            org.apache.logging.log4j.core.LoggerContext loggerContext = (org.apache.logging.log4j.core.LoggerContext) org.apache.logging.log4j.LogManager.getContext(false);
+            Map<String, LoggerConfig> map = loggerContext.getConfiguration().getLoggers();
+            for (LoggerConfig loggerConfig : map.values()) {
+                String key = loggerConfig.getName();
+                if (StringUtils.isBlank(key)) {
+                    key = ROOT_KEY;
                 }
+                loggerMap.put(key, loggerConfig);
             }
-            org.apache.log4j.Logger rootLogger = org.apache.log4j.LogManager.getRootLogger();
-            loggerMap.put(rootLogger.getName(), rootLogger);
         } else {
             logFrameworkType = LogFrameworkType.UNKNOWN;
             log.error("[LoggerLevel]Log框架无法识别:type={}", type);
@@ -75,10 +76,14 @@ public class Log4jProcessUnitImpl implements IProcessUnit {
             if (null == logger) {
                 throw new RuntimeException(LOGGER_NOT_EXSIT);
             }
-            if (logFrameworkType == LogFrameworkType.LOG4J) {
-                org.apache.log4j.Logger targetLogger = (org.apache.log4j.Logger) logger;
-                org.apache.log4j.Level targetLevel = org.apache.log4j.Level.toLevel(logLevel);
-                targetLogger.setLevel(targetLevel);
+            if (logFrameworkType == LogFrameworkType.LOG4J2) {
+                org.apache.logging.log4j.core.config.LoggerConfig loggerConfig = (org.apache.logging.log4j.core.config.LoggerConfig) logger;
+                org.apache.logging.log4j.Level targetLevel = org.apache.logging.log4j.Level.toLevel(logLevel);
+                //log.info("[LoggerLevel]目前的日志级别为 "+targetLevel);
+                loggerConfig.setLevel(targetLevel);
+                org.apache.logging.log4j.core.LoggerContext ctx = (org.apache.logging.log4j.core.LoggerContext) org.apache.logging.log4j.LogManager
+                        .getContext(false);
+                ctx.updateLoggers(); // This causes all Loggers to refetch information from their LoggerConfig.
             } else {
                 throw new RuntimeException(LOGGER_TYPE_UNKNOWN);
             }
@@ -93,14 +98,18 @@ public class Log4jProcessUnitImpl implements IProcessUnit {
         if (null == logger) {
             throw new RuntimeException(LOGGER_NOT_EXSIT);
         }
-        if (logFrameworkType == LogFrameworkType.LOG4J) {
-            org.apache.log4j.Logger targetLogger = (org.apache.log4j.Logger) logger;
-            org.apache.log4j.Level targetLevel = org.apache.log4j.Level.toLevel(loggerLevel);
-            targetLogger.setLevel(targetLevel);
+        if (logFrameworkType == LogFrameworkType.LOG4J2) {
+            org.apache.logging.log4j.core.config.LoggerConfig loggerConfig = (org.apache.logging.log4j.core.config.LoggerConfig) logger;
+            org.apache.logging.log4j.Level targetLevel = org.apache.logging.log4j.Level.toLevel(loggerLevel);
+            //log.info("[LoggerLevel]目前的日志级别为 "+targetLevel);
+            loggerConfig.setLevel(targetLevel);
+            org.apache.logging.log4j.core.LoggerContext ctx = (org.apache.logging.log4j.core.LoggerContext) org.apache.logging.log4j.LogManager.getContext(false);
+            ctx.updateLoggers(); // This causes all Loggers to refetch information from their LoggerConfig.
         } else {
             throw new RuntimeException(LOGGER_TYPE_UNKNOWN);
         }
         return "success";
+
     }
 
     @Override
@@ -111,8 +120,9 @@ public class Log4jProcessUnitImpl implements IProcessUnit {
         for (ConcurrentMap.Entry<String, Object> entry : loggerMap.entrySet()) {
             JSONObject loggerJSON = new JSONObject();
             loggerJSON.put(LOGGER_NAME, entry.getKey());
-            if (logFrameworkType == LogFrameworkType.LOG4J) {
-                org.apache.log4j.Logger targetLogger = (org.apache.log4j.Logger) entry.getValue();
+            if (logFrameworkType == LogFrameworkType.LOG4J2) {
+                LoggerConfig targetLogger = (LoggerConfig) entry
+                        .getValue();
                 loggerJSON.put(LOGGER_LEVEL, targetLogger.getLevel().toString());
             } else {
                 loggerJSON.put(LOGGER_LEVEL, LOGGER_TYPE_UNKNOWN);
@@ -123,4 +133,5 @@ public class Log4jProcessUnitImpl implements IProcessUnit {
         log.info("result = {}", result);
         return result.toString();
     }
+
 }

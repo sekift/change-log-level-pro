@@ -15,32 +15,28 @@ private static final Logger logger = LogManager.getLogger(实际类名.class.get
         <Console name="Console" target="SYSTEM_OUT">
             <!-- 需要记录的级别 -->
             <!-- <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" /> -->
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"/>
         </Console>
 
         <!-- 输出到文件，按天或者超过80MB分割 -->
-        <RollingFile name="RollingFile" fileName="../logs/logger-x.log"  filePattern="../logs/$${date:yyyy-MM}/xjj-%d{yyyy-MM-dd}-%i.log.gz">
+        <RollingFile name="RollingFile" fileName="logs/logger-x.log"
+                     filePattern="logs/${date:yyyy-MM}/xjj-%d{yyyy-MM-dd}-%i.log.gz">
             <!-- 需要记录的级别 -->
             <!-- <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" /> -->
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"/>
             <Policies>
-                <OnStartupTriggeringPolicy />
-                <TimeBasedTriggeringPolicy />
-                <SizeBasedTriggeringPolicy size="80 MB" />
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="80 MB"/>
             </Policies>
         </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="DEBUG"> <!-- 全局配置 -->
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
         </Root>
         <!-- 为sql语句配置特殊的Log级别，方便调试 -->
-<!--        <Logger name="com.sekift" level="${log.sql.level}" additivity="false">
-            <AppenderRef ref="Console" />
-        </Logger>-->
-        <Logger name="com.sekift.logger.MethodInvokerProcessUnitTest">
-                <Level value="DEBUG"/>
-        </Logger>
+        <Logger name="com.sekift.logger.Log4j2ProcessUnitImplTest" level="debug"/>
     </Loggers>
 </Configuration>

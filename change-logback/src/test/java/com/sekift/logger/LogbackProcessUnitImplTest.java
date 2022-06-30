@@ -1,18 +1,17 @@
 package com.sekift.logger;
 
-import com.sekift.logger.impl.Log4jProcessUnitImpl;
+import com.sekift.logger.impl.LogbackProcessUnitImpl;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Log4jProcessUnitImplTest {
-
-    Logger logger = LoggerFactory.getLogger(Log4jProcessUnitImplTest.class);
+public class LogbackProcessUnitImplTest {
+    Logger logger = LoggerFactory.getLogger(LogbackProcessUnitImplTest.class);
 
     @Test
     public void setLogLevelTest() {
         System.out.println("test start");
-        IProcessUnit process = Log4jProcessUnitImpl.getSingleton();
+        IProcessUnit process = LogbackProcessUnitImpl.getSingleton();
         process.setLogLevel("info");
 
         logger.debug("debug ...");
@@ -24,7 +23,7 @@ public class Log4jProcessUnitImplTest {
     @Test
     public void setLogLevelTest2() {
         System.out.println("test start");
-        IProcessUnit process = Log4jProcessUnitImpl.getSingleton();
+        IProcessUnit process = LogbackProcessUnitImpl.getSingleton();
 
         logger.debug("debug ...");
         System.out.println("--------");
